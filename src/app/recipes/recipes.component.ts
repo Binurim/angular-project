@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RecipeListComponent } from "./recipe-list/recipe-list.component";
 import { RecipeDetailComponent } from "./recipe-detail/recipe-detail.component";
 import { Recipe } from './recipe.model';
+import { RecipeService } from './recipe.service';
 
 @Component({
   selector: 'app-recipes',
@@ -12,10 +13,16 @@ import { Recipe } from './recipe.model';
 })
 export class RecipesComponent {
 
-  recipe!: Recipe;
+  selectedRecipe!: Recipe;
 
-  onRecipeSelect(recipe: Recipe) {
-    this.recipe = recipe;
+  recipeService = inject(RecipeService);
+  
+  ngOnInit(): void {
+    this.recipeService.recipeSelected.subscribe(
+      (recipe: Recipe) => {
+        this.selectedRecipe = recipe;
+      }
+    )
   }
 
 }

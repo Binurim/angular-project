@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { RecipeItemComponent } from './recipe-item/recipe-item.component';
 import { Recipe } from '../recipe.model';
 import { CommonModule } from '@angular/common';
+import { RecipeService } from '../recipe.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -11,10 +12,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './recipe-list.component.css'
 })
 export class RecipeListComponent {
-  receips: Recipe[] = [
-    new Recipe(1, 'Test recipe', 'test', 'test'),
-    new Recipe(1, 'Test recipe@', 'test@', 'test@')
-  ];
+
+  recipeService = inject(RecipeService);
+
+  receips!: Recipe[];
   @Output() onRecipeSelect = new EventEmitter<Recipe>();
+
+  ngOnInit(): void {
+    this.receips = this.recipeService.getRecipes();
+  }
 
 }

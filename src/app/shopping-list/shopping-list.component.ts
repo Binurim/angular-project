@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ShoppingEditComponent } from './shopping-edit/shopping-edit.component';
 import { Ingredient } from '../shared/ingredient.model';
 import { CommonModule } from '@angular/common';
+import { ShoppingListService } from './shopping-list.service';
 
 @Component({
   selector: 'app-shopping-list',
@@ -11,14 +12,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './shopping-list.component.css'
 })
 export class ShoppingListComponent {
-  ingredients: Ingredient[] = [
-    new Ingredient('Apple', 5),
-    new Ingredient('Oranges', 6)
-  ];
+  shoppngListService = inject(ShoppingListService);
 
+  ingredients!: Ingredient[];
 
-  onIngredientAdded(ingredient: Ingredient) {
-    this.ingredients.push(ingredient);
+  ngOnInit(): void {
+    this.ingredients = this.shoppngListService.getIngredients();
+    this.shoppngListService.ingredientsChanged.subscribe(
+      (ingredients: Ingredient[]) => {
+        this.ingredients = ingredients;
+      }
+    );
   }
 
 }
