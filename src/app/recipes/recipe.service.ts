@@ -25,4 +25,13 @@ export class RecipeService {
   getRecipes() {
     return this.receips.slice();
   }
+
+  getRecipesById(id: number): Recipe {
+    const recipe = this.receips.find((recipe) => recipe.id === id);
+    if (!recipe) {
+      throw new Error('Recipe not found');
+    }
+    return recipe;
+  }
+  
 }

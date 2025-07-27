@@ -3,6 +3,8 @@ import { Recipe } from '../recipe.model';
 import { DropdownDirective } from '../../shared/dropdown.directive';
 import { ShoppingListService } from '../../shopping-list/shopping-list.service';
 import { Ingredient } from '../../shared/ingredient.model';
+import { RecipeService } from '../recipe.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -12,11 +14,20 @@ import { Ingredient } from '../../shared/ingredient.model';
   styleUrl: './recipe-detail.component.css',
 })
 export class RecipeDetailComponent {
-  @Input()
   recipe!: Recipe;
   // recipe = input<Recipe>();
+  recipeId: number = 1;
 
   shoppngListService = inject(ShoppingListService);
+  recipeService = inject(RecipeService);
+  route = inject(ActivatedRoute);
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.recipeId = +params['id'];
+      this.recipe = this.recipeService.getRecipesById(this.recipeId);
+    });
+  }
 
   addToShoppingList(ingredients: Ingredient[]) {
     for (let ingredient of ingredients) {
