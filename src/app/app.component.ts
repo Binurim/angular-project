@@ -1,29 +1,32 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { SuccessAlertComponent } from "./success-alert/success-alert.component";
-import { WarningAlertComponent } from './warning-alert/warning-alert.component';
+import { Component} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from './header/header.component';
+import { RecipesComponent } from "./recipes/recipes.component";
+import { ShoppingListComponent } from "./shopping-list/shopping-list.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SuccessAlertComponent, WarningAlertComponent, FormsModule, CommonModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    HeaderComponent,
+    RecipesComponent,
+    ShoppingListComponent,
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
-  username: String = 'testUsername';
-  title = 'angular-project';
-  displayPara: boolean = false;
-  buttonClickLogs: number[] = [];
+  isRecipes = false;
+  loadedFeature = 'recipes';
 
-  onClickUsername() {
-    this.username = '';
-  }
-
-  onDisplayDetails() {
-    this.displayPara = !this.displayPara;
-    this.buttonClickLogs.push(this.buttonClickLogs.length + 1)
+  onNavigate(feature: string) {
+    if (feature === this.loadedFeature) {
+      this.isRecipes = true;
+    } else {
+      this.isRecipes = false;
+    }
   }
 }
