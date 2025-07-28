@@ -1,8 +1,9 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ShoppingEditComponent } from './shopping-edit/shopping-edit.component';
 import { Ingredient } from '../shared/ingredient.model';
 import { CommonModule } from '@angular/common';
 import { ShoppingListService } from './shopping-list.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-list',
@@ -13,16 +14,21 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class ShoppingListComponent {
   shoppngListService = inject(ShoppingListService);
+  private ingredientsChangedSub!: Subscription;
 
   ingredients!: Ingredient[];
 
   ngOnInit(): void {
     this.ingredients = this.shoppngListService.getIngredients();
-    this.shoppngListService.ingredientsChanged.subscribe(
+    this.ingredientsChangedSub = this.shoppngListService.ingredientsChanged.subscribe(
       (ingredients: Ingredient[]) => {
         this.ingredients = ingredients;
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.ingredientsChangedSub.unsubscribe();
   }
 
 }
