@@ -27,6 +27,10 @@ export class ShoppingListComponent {
     );
   }
 
+  onEditItem(index: number) {
+    this.shoppngListService.startEditing.next(index);
+  }
+
   ngOnDestroy(): void {
     this.ingredientsChangedSub.unsubscribe();
   }
